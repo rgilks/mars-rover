@@ -39,11 +39,11 @@ describe('mars-rover', () => {
     it('Should return true if position is not within the grid', () => {
       let grid = mr.buildGrid(3, 2)
 
-      expect(mr.isOffGrid({x: 0, y: 0}, grid)).toBe(false)
-      expect(mr.isOffGrid({x: 4, y: 0}, grid)).toBe(true)
-      expect(mr.isOffGrid({x: 3, y: 3}, grid)).toBe(true)
-      expect(mr.isOffGrid({x: -1, y: 0}, grid)).toBe(true)
-      expect(mr.isOffGrid({x: 0, y: -2}, grid)).toBe(true)
+      expect(mr.isOffGrid(grid, {x: 0, y: 0})).toBe(false)
+      expect(mr.isOffGrid(grid, {x: 4, y: 0})).toBe(true)
+      expect(mr.isOffGrid(grid, {x: 3, y: 3})).toBe(true)
+      expect(mr.isOffGrid(grid, {x: -1, y: 0})).toBe(true)
+      expect(mr.isOffGrid(grid, {x: 0, y: -2})).toBe(true)
     })
   })
 
@@ -55,6 +55,55 @@ describe('mars-rover', () => {
 
       expect(mr.hasScent(grid, {x: 0, y: 1})).toBe(true)
       expect(mr.hasScent(grid, {x: 0, y: 0})).toBe(false)
+    })
+  })
+
+  describe('processInstructions', () => {
+    it('Should process the rover instructions and move it around the grid, using first example given', () => {
+      let rover = mr.buildRover(1, 1, 1, 'RFRFRFRF')
+      let grid = mr.buildGrid(5, 3)
+
+      rover = mr.processInstructions(rover, grid)
+
+      expect(rover).toEqual({
+        position: {x: 1, y: 1},
+        previousPosition: {x: 0, y: 1},
+        facing: 1,
+        lost: false,
+        instructions: 'RFRFRFRF'
+      })
+    })
+
+    it('Should process the rover instructions and move it around the grid, using second example given', () => {
+      let rover = mr.buildRover(3, 2, 0, 'FRRFLLFFRRFLL')
+      let grid = mr.buildGrid(5, 3)
+
+      rover = mr.processInstructions(rover, grid)
+
+      expect(rover).toEqual({
+        position: {x: 3, y: 4},
+        previousPosition: {x: 3, y: 3},
+        facing: 0,
+        lost: true,
+        instructions: 'FRRFLLFFRRFLL'
+      })
+    })
+
+    it('Should process the rover instructions and move it around the grid, using third example given', () => {
+      let rover = mr.buildRover(0, 3, 3, 'LLFFFLFLFL')
+      let grid = mr.buildGrid(5, 3)
+
+      mr.dropScent(grid, {x: 3, y: 3})
+
+      rover = mr.processInstructions(rover, grid)
+
+      expect(rover).toEqual({
+        position: {x: 2, y: 3},
+        previousPosition: {x: 3, y: 3},
+        facing: 2,
+        lost: false,
+        instructions: 'LLFFFLFLFL'
+      })
     })
   })
 })

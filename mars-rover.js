@@ -1,7 +1,9 @@
 function buildRover (x, y, facing, instructions) {
   return {
     position: {x, y},
+    previousPosition: {x, y},
     facing,
+    lost: false,
     instructions
   }
 }
@@ -50,7 +52,7 @@ function buildGrid (x, y) {
   return grid
 }
 
-function isOffGrid (position, grid) {
+function isOffGrid (grid, position) {
   return position.x < 0 ||
     position.y < 0 ||
     position.x > grid.length ||
@@ -65,6 +67,38 @@ function dropScent (grid, position) {
   grid[position.x][position.y] = true
 }
 
+let command = {
+  L: turnLeft,
+  R: turnRight,
+  F: forward
+}
+
+function processInstructions (rover, grid) {
+  let r = {
+    ...rover,
+    position: {...rover.position},
+    previousPosition: {...rover.previousPosition}
+  }
+
+  let instructions = r.instructions.split('')
+
+  instructions.forEach(i => {
+    if (!r.lost) {
+      r = command[i](r)
+      if (isOffGrid(grid, r.position)) {
+        if (hasScent(grid, r.previousPosition)) {
+          r.position = {...r.previousPosition}
+        } else {
+          r.lost = true
+          dropScent(grid, r.previousPosition)
+        }
+      }
+    }
+  })
+
+  return r
+}
+
 module.exports = {
   buildRover,
   cardinal,
@@ -74,5 +108,6 @@ module.exports = {
   buildGrid,
   isOffGrid,
   hasScent,
-  dropScent
+  dropScent,
+  processInstructions
 }
