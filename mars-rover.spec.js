@@ -1,4 +1,5 @@
 /* eslint-env jest */
+const fs = require('fs')
 const mr = require('./mars-rover.js')
 
 describe('mars-rover', () => {
@@ -104,6 +105,49 @@ describe('mars-rover', () => {
         lost: false,
         instructions: 'LLFFFLFLFL'
       })
+    })
+  })
+
+  describe('parseInput', () => {
+    it('Should parse the input file and create the problem specification', () => {
+      const input = fs.readFileSync('sample_files/sample-input.txt', {encoding: 'utf8'})
+      const spec = mr.parseInput(input)
+
+      expect(spec.grid.length).toEqual(5)
+      expect(spec.grid[0].length).toEqual(3)
+
+      expect(spec.rovers).toEqual([{
+        instructions: 'RFRFRFRF',
+        facing: 1,
+        lost: false,
+        position: {x: 1, y: 1},
+        previousPosition: {x: 1, y: 1}
+      }, {
+        instructions: 'FRRFLLFFRRFLL',
+        facing: 0,
+        lost: false,
+        position: {x: 3, y: 2},
+        previousPosition: {x: 3, y: 2}
+      }, {
+        instructions: 'LLFFFLFLFL',
+        facing: 3,
+        lost: false,
+        position: {x: 0, y: 3},
+        previousPosition: {x: 0, y: 3}
+      }]
+      )
+    })
+
+    it('Should throw a RangeError if a co-ordinate value is over 50', () => {
+      expect(() => mr.parseInput('51 3\n1 1 E\n')).toThrowError('coordinate vale of 51, the maximum value is 50')
+      expect(() => mr.parseInput('5 3\n1 52 E\n')).toThrowError('coordinate vale of 52, the maximum value is 50')
+    })
+
+    it('Should throw a RangeError if input instructions are over 100 characters long', () => {
+      const input = '5 3\n1 1 E\n' + new Array(102).join('L') + '\n'
+
+      expect(() => mr.parseInput(input))
+      .toThrowError('instructions are 101 characters in length, the maximum value is 100')
     })
   })
 })

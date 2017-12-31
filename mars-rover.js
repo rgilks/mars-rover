@@ -1,4 +1,12 @@
+const maxCoordinateValue = 50
+const maxInstructionsLength = 100
+
 function buildRover (x, y, facing, instructions) {
+  if (instructions && instructions.length > maxInstructionsLength) {
+    throw new RangeError(
+      `instructions are ${instructions.length} characters in length, the maximum value is ${maxInstructionsLength}`)
+  }
+
   return {
     position: {x, y},
     previousPosition: {x, y},
@@ -99,6 +107,37 @@ function processInstructions (rover, grid) {
   return r
 }
 
+function parseCoordinate (s) {
+  const i = parseInt(s)
+  if (i > maxCoordinateValue) {
+    throw new RangeError(`coordinate vale of ${s}, the maximum value is ${maxCoordinateValue}`)
+  }
+  return i
+}
+
+function parseInput (input) {
+  const line = input.split('\n')
+  const gridSpec = line[0].split(' ')
+  const grid = buildGrid(parseCoordinate(gridSpec[0]), parseCoordinate(gridSpec[1]))
+
+  const rovers = []
+
+  let i = 1
+
+  while (i < line.length - 1) {
+    while (line[i] === '') {
+      i++
+    }
+    const roverSpec = line[i].split(' ')
+    const orient = orientation.findIndex(o => o.cardinal === roverSpec[2])
+    const rover = buildRover(parseCoordinate(roverSpec[0]), parseCoordinate(roverSpec[1]), orient, line[i + 1])
+    rovers.push(rover)
+    i += 2
+  }
+
+  return {grid, rovers}
+}
+
 module.exports = {
   buildRover,
   cardinal,
@@ -109,5 +148,6 @@ module.exports = {
   isOffGrid,
   hasScent,
   dropScent,
-  processInstructions
+  processInstructions,
+  parseInput
 }
