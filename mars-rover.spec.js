@@ -180,6 +180,19 @@ describe('mars-rover', () => {
       }]
       )
     })
+
+    it('Should accept additional commands, in this case a turbo command that moves the rover forward 2 steps', () => {
+      const input = '5 3\n1 1 E\nRFRFRFRFT'
+      const spec = mr.parseInput(input)
+
+      const turboCommand = (rover) => mr.forward(mr.forward(rover))
+
+      const rovers = mr.processSequentially(spec, {T: turboCommand})
+
+      const output = mr.buildOutput(rovers)
+
+      expect(output).toEqual('3 1 E')
+    })
   })
 
   describe('buildOutput', () => {

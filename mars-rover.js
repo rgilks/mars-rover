@@ -81,12 +81,14 @@ let command = {
   F: forward
 }
 
-function processInstructions (rover, grid) {
+function processInstructions (rover, grid, additionalCommands) {
   let r = {
     ...rover,
     position: {...rover.position},
     previousPosition: {...rover.previousPosition}
   }
+
+  command = {...command, ...additionalCommands}
 
   let instructions = r.instructions.split('')
 
@@ -138,8 +140,8 @@ function parseInput (input) {
   return {grid, rovers}
 }
 
-function processSequentially (spec) {
-  return spec.rovers.map(rover => processInstructions(rover, spec.grid))
+function processSequentially (spec, additionalCommands) {
+  return spec.rovers.map(rover => processInstructions(rover, spec.grid, additionalCommands))
 }
 
 function buildOutput (rovers) {
