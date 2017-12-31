@@ -142,6 +142,14 @@ function processSequentially (spec) {
   return spec.rovers.map(rover => processInstructions(rover, spec.grid))
 }
 
+function buildOutput (rovers) {
+  return rovers.map(rover =>
+    rover.lost
+      ? `${rover.previousPosition.x} ${rover.previousPosition.y} ${orientation[rover.facing].cardinal} LOST`
+      : `${rover.position.x} ${rover.position.y} ${orientation[rover.facing].cardinal}`)
+  .reduce((a, b) => `${a}\n${b}`)
+}
+
 module.exports = {
   buildRover,
   cardinal,
@@ -154,5 +162,6 @@ module.exports = {
   dropScent,
   processInstructions,
   parseInput,
-  processSequentially
+  processSequentially,
+  buildOutput
 }

@@ -181,4 +181,16 @@ describe('mars-rover', () => {
       )
     })
   })
+
+  describe('buildOutput', () => {
+    it('Should build up the output string', () => {
+      const input = fs.readFileSync('sample_files/sample-input.txt', {encoding: 'utf8'})
+      const spec = mr.parseInput(input)
+      const rovers = mr.processSequentially(spec)
+
+      const output = mr.buildOutput(rovers)
+
+      expect(output).toEqual('1 1 E\n3 3 N LOST\n2 3 S')
+    })
+  })
 })
