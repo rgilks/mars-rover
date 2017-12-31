@@ -31,9 +31,19 @@ function turn (inc, rover) {
 const turnLeft = rover => turn(-1, rover)
 const turnRight = rover => turn(1, rover)
 
+function forward (rover) {
+  let position = {...rover.position}
+  let previousPosition = {...rover.position}
+
+  orientation[rover.facing].step(position)
+
+  return {...rover, position, previousPosition}
+}
+
 module.exports = {
   buildRover,
   cardinal,
   turnLeft,
-  turnRight
+  turnRight,
+  forward
 }
