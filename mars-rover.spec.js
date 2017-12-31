@@ -46,4 +46,15 @@ describe('mars-rover', () => {
       expect(mr.isOffGrid({x: 0, y: -2}, grid)).toBe(true)
     })
   })
+
+  describe('dropScent', () => {
+    it('Should mark a position on the grid as scented', () => {
+      let grid = mr.buildGrid(3, 2)
+
+      mr.dropScent(grid, {x: 0, y: 1})
+
+      expect(mr.hasScent(grid, {x: 0, y: 1})).toBe(true)
+      expect(mr.hasScent(grid, {x: 0, y: 0})).toBe(false)
+    })
+  })
 })

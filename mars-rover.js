@@ -57,6 +57,14 @@ function isOffGrid (position, grid) {
     position.y > grid[0].length
 }
 
+function hasScent (grid, position) {
+  return grid[position.x][position.y] === true
+}
+
+function dropScent (grid, position) {
+  grid[position.x][position.y] = true
+}
+
 module.exports = {
   buildRover,
   cardinal,
@@ -64,5 +72,7 @@ module.exports = {
   turnRight,
   forward,
   buildGrid,
-  isOffGrid
+  isOffGrid,
+  hasScent,
+  dropScent
 }
