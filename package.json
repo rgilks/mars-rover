@@ -2,6 +2,7 @@
   "name": "mars-rover",
   "version": "1.0.0",
   "description": "Developer Programming Problem",
+  "main": "index.js",
   "engines": {
     "node": "8.9.3"
   },
