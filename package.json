@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Developer Programming Problem",
   "main": "index.js",
+  "bin": "command.js",
   "engines": {
     "node": "8.9.3"
   },
