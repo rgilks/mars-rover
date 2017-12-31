@@ -34,4 +34,16 @@ describe('mars-rover', () => {
       expect(updatedRover.position).toEqual({x: 0, y: 1})
     })
   })
+
+  describe('isOffGrid', () => {
+    it('Should return true if position is not within the grid', () => {
+      let grid = mr.buildGrid(3, 2)
+
+      expect(mr.isOffGrid({x: 0, y: 0}, grid)).toBe(false)
+      expect(mr.isOffGrid({x: 4, y: 0}, grid)).toBe(true)
+      expect(mr.isOffGrid({x: 3, y: 3}, grid)).toBe(true)
+      expect(mr.isOffGrid({x: -1, y: 0}, grid)).toBe(true)
+      expect(mr.isOffGrid({x: 0, y: -2}, grid)).toBe(true)
+    })
+  })
 })

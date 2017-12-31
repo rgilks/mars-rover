@@ -40,10 +40,29 @@ function forward (rover) {
   return {...rover, position, previousPosition}
 }
 
+function buildGrid (x, y) {
+  const grid = new Array(x)
+
+  for (let i = 0; i < x; i++) {
+    grid[i] = new Array(y)
+  }
+
+  return grid
+}
+
+function isOffGrid (position, grid) {
+  return position.x < 0 ||
+    position.y < 0 ||
+    position.x > grid.length ||
+    position.y > grid[0].length
+}
+
 module.exports = {
   buildRover,
   cardinal,
   turnLeft,
   turnRight,
-  forward
+  forward,
+  buildGrid,
+  isOffGrid
 }
