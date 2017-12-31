@@ -138,6 +138,10 @@ function parseInput (input) {
   return {grid, rovers}
 }
 
+function processSequentially (spec) {
+  return spec.rovers.map(rover => processInstructions(rover, spec.grid))
+}
+
 module.exports = {
   buildRover,
   cardinal,
@@ -149,5 +153,6 @@ module.exports = {
   hasScent,
   dropScent,
   processInstructions,
-  parseInput
+  parseInput,
+  processSequentially
 }

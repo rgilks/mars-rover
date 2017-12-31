@@ -111,6 +111,7 @@ describe('mars-rover', () => {
   describe('parseInput', () => {
     it('Should parse the input file and create the problem specification', () => {
       const input = fs.readFileSync('sample_files/sample-input.txt', {encoding: 'utf8'})
+
       const spec = mr.parseInput(input)
 
       expect(spec.grid.length).toEqual(5)
@@ -148,6 +149,36 @@ describe('mars-rover', () => {
 
       expect(() => mr.parseInput(input))
       .toThrowError('instructions are 101 characters in length, the maximum value is 100')
+    })
+  })
+
+  describe('processSequentially', () => {
+    it('Should process the instructions for a set of rovers in sequence, retaining any grid scent', () => {
+      const input = fs.readFileSync('sample_files/sample-input.txt', {encoding: 'utf8'})
+      const spec = mr.parseInput(input)
+
+      const rovers = mr.processSequentially(spec)
+
+      expect(rovers).toEqual([{
+        instructions: 'RFRFRFRF',
+        facing: 1,
+        lost: false,
+        position: {x: 1, y: 1},
+        previousPosition: {x: 0, y: 1}
+      }, {
+        instructions: 'FRRFLLFFRRFLL',
+        facing: 0,
+        lost: true,
+        position: {x: 3, y: 4},
+        previousPosition: {x: 3, y: 3}
+      }, {
+        instructions: 'LLFFFLFLFL',
+        facing: 2,
+        lost: false,
+        position: {x: 2, y: 3},
+        previousPosition: {x: 3, y: 3}
+      }]
+      )
     })
   })
 })
